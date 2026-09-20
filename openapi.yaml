@@ -1,0 +1,347 @@
+openapi: 3.0.3
+info:
+  title: API MiniBlog
+  description: >
+    API REST para gestionar authors y posts del servicio de contenidos MiniBlog.
+    Proyecto Integrador Módulo 2 - Henry.
+  version: 1.0.0
+
+servers:
+  - url: http://localhost:3000
+    description: Servidor local de desarrollo
+  - url: https://TU-APP.up.railway.app
+    description: Servidor de producción (Railway) — reemplazar con la URL real tras el deploy
+
+tags:
+  - name: Authors
+    description: Operaciones sobre autores
+  - name: Posts
+    description: Operaciones sobre publicaciones
+
+paths:
+  /authors:
+    get:
+      tags: [Authors]
+      summary: Listar todos los authors
+      responses:
+        '200':
+          description: Lista de authors
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Author'
+    post:
+      tags: [Authors]
+      summary: Crear un nuevo author
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorInput'
+            example:
+              name: Ana García
+              email: ana@example.com
+              bio: Desarrolladora full-stack
+      responses:
+        '201':
+          description: Author creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '400':
+          description: Datos inválidos (campo faltante o email duplicado)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /authors/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del author
+    get:
+      tags: [Authors]
+      summary: Obtener el detalle de un author
+      responses:
+        '200':
+          description: Author encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '404':
+          description: Author no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags: [Authors]
+      summary: Actualizar un author (actualización parcial)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthorInput'
+            example:
+              bio: Bio actualizada
+      responses:
+        '200':
+          description: Author actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Author'
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Author no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags: [Authors]
+      summary: Eliminar un author (borra en cascada sus posts)
+      responses:
+        '204':
+          description: Author eliminado exitosamente (sin contenido)
+        '404':
+          description: Author no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /posts:
+    get:
+      tags: [Posts]
+      summary: Listar todos los posts
+      responses:
+        '200':
+          description: Lista de posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Post'
+    post:
+      tags: [Posts]
+      summary: Crear un nuevo post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+            example:
+              title: Introducción a Node.js
+              content: Node.js es un runtime de JavaScript...
+              author_id: 1
+              published: true
+      responses:
+        '201':
+          description: Post creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '400':
+          description: Datos inválidos (campo faltante o author_id inexistente)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /posts/{id}:
+    parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: integer
+        description: ID del post
+    get:
+      tags: [Posts]
+      summary: Obtener el detalle de un post
+      responses:
+        '200':
+          description: Post encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '404':
+          description: Post no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags: [Posts]
+      summary: Actualizar un post (actualización parcial)
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PostInput'
+            example:
+              published: true
+      responses:
+        '200':
+          description: Post actualizado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Post'
+        '400':
+          description: Datos inválidos
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '404':
+          description: Post no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    delete:
+      tags: [Posts]
+      summary: Eliminar un post
+      responses:
+        '204':
+          description: Post eliminado exitosamente (sin contenido)
+        '404':
+          description: Post no encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+
+  /posts/author/{authorId}:
+    get:
+      tags: [Posts]
+      summary: Listar los posts de un author específico, con el nombre del author incluido
+      parameters:
+        - name: authorId
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID del author
+      responses:
+        '200':
+          description: Lista de posts del author (vacía si no tiene posts)
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  allOf:
+                    - $ref: '#/components/schemas/Post'
+                    - type: object
+                      properties:
+                        author_name:
+                          type: string
+                          example: Ana García
+
+components:
+  schemas:
+    Author:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: Ana García
+        email:
+          type: string
+          format: email
+          example: ana@example.com
+        bio:
+          type: string
+          nullable: true
+          example: Desarrolladora full-stack
+        created_at:
+          type: string
+          format: date-time
+
+    AuthorInput:
+      type: object
+      required: [name, email]
+      properties:
+        name:
+          type: string
+          example: Ana García
+        email:
+          type: string
+          format: email
+          example: ana@example.com
+        bio:
+          type: string
+          nullable: true
+          example: Desarrolladora full-stack
+
+    Post:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: Introducción a Node.js
+        content:
+          type: string
+          example: Node.js es un runtime de JavaScript...
+        author_id:
+          type: integer
+          example: 1
+        published:
+          type: boolean
+          example: true
+        created_at:
+          type: string
+          format: date-time
+
+    PostInput:
+      type: object
+      required: [title, content, author_id]
+      properties:
+        title:
+          type: string
+          example: Introducción a Node.js
+        content:
+          type: string
+          example: Node.js es un runtime de JavaScript...
+        author_id:
+          type: integer
+          example: 1
+        published:
+          type: boolean
+          default: false
+
+    Error:
+      type: object
+      properties:
+        error:
+          type: string
+          example: El campo "name" es obligatorio
