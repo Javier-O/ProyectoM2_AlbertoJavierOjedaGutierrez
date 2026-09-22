@@ -1,4 +1,7 @@
 const express = require('express');
+const path = require('path');
+const swaggerUi = require('swagger-ui-express');
+const YAML = require('yamljs');
 const authorsRoutes = require('./routes/authors.routes');
 const postsRoutes = require('./routes/posts.routes');
 const errorHandler = require('./middlewares/errorHandler');
@@ -11,6 +14,11 @@ app.use(express.json());
 app.get('/health', (req, res) => {
   res.status(200).json({ status: 'ok' });
 });
+
+// Documentación interactiva: sirve el openapi.yaml (que vive en la raíz del
+// proyecto, un nivel arriba de src/) como una página de Swagger UI en /docs.
+const openapiDocument = YAML.load(path.join(__dirname, '..', 'openapi.yaml'));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(openapiDocument));
 
 app.use('/authors', authorsRoutes);
 app.use('/posts', postsRoutes);
