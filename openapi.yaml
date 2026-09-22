@@ -9,8 +9,8 @@ info:
 servers:
   - url: http://localhost:3000
     description: Servidor local de desarrollo
-  - url: https://TU-APP.up.railway.app
-    description: Servidor de producción (Railway) — reemplazar con la URL real tras el deploy
+  - url: https://proyectom2albertojavierojedagutierrez-production.up.railway.app
+    description: Servidor de producción (Railway)
 
 tags:
   - name: Authors
