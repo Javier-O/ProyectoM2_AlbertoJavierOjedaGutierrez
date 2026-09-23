@@ -4,6 +4,15 @@ Proyecto Integrador — Módulo 2 (Henry, Fullstack).
 
 API REST en Node.js + Express, conectada a PostgreSQL, para gestionar `authors` y `posts` de un servicio de contenidos tipo MiniBlog. Incluye validaciones, manejo centralizado de errores, tests automatizados con Vitest + Supertest, y documentación OpenAPI.
 
+**Endpoints disponibles en producción:**
+
+| Ruta | URL de ejemplo | Descripción |
+|---|---|---|
+| `/health` | https://proyectom2albertojavierojedagutierrez-production.up.railway.app/health | Verifica que el servidor esté activo |
+| `/authors` | https://proyectom2albertojavierojedagutierrez-production.up.railway.app/authors | Lista de authors (y base para el resto del CRUD, ej. `/authors/1`) |
+| `/posts` | https://proyectom2albertojavierojedagutierrez-production.up.railway.app/posts | Lista de posts (y base para el resto del CRUD, ej. `/posts/1`) |
+| `/docs` | https://proyectom2albertojavierojedagutierrez-production.up.railway.app/docs | Documentación interactiva (Swagger UI) |
+
 ## Índice
 - [Descripción del proyecto](#descripción-del-proyecto)
 - [Requisitos previos](#requisitos-previos)
