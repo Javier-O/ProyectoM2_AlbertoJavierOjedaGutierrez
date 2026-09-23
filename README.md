@@ -133,7 +133,6 @@ https://proyectom2albertojavierojedagutierrez-production.up.railway.app
 | `/health` | https://proyectom2albertojavierojedagutierrez-production.up.railway.app/health | Verifica que el servidor esté activo |
 | `/authors` | https://proyectom2albertojavierojedagutierrez-production.up.railway.app/authors | Lista de authors (y base para el resto del CRUD, ej. `/authors/1`) |
 | `/posts` | https://proyectom2albertojavierojedagutierrez-production.up.railway.app/posts | Lista de posts (y base para el resto del CRUD, ej. `/posts/1`) |
-| `/comments` | https://proyectom2albertojavierojedagutierrez-production.up.railway.app/comments | Lista de comments |
 | `/docs` | https://proyectom2albertojavierojedagutierrez-production.up.railway.app/docs | Documentación interactiva (Swagger UI) |
 
 Los endpoints `POST`, `PUT` y `DELETE` requieren un cliente HTTP (Postman, curl, etc.) ya que no se pueden probar directamente desde el navegador — consulta `/docs` para probarlos de forma interactiva, o el archivo [`openapi.yaml`](./openapi.yaml) para el detalle completo de cada uno.
