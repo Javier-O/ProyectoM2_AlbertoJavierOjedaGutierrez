@@ -126,6 +126,18 @@ La aplicación está desplegada en Railway, con dos servicios dentro del mismo p
 https://proyectom2albertojavierojedagutierrez-production.up.railway.app
 ```
 
+**Endpoints disponibles en producción:**
+
+| Ruta | URL de ejemplo | Descripción |
+|---|---|---|
+| `/health` | https://proyectom2albertojavierojedagutierrez-production.up.railway.app/health | Verifica que el servidor esté activo |
+| `/authors` | https://proyectom2albertojavierojedagutierrez-production.up.railway.app/authors | Lista de authors (y base para el resto del CRUD, ej. `/authors/1`) |
+| `/posts` | https://proyectom2albertojavierojedagutierrez-production.up.railway.app/posts | Lista de posts (y base para el resto del CRUD, ej. `/posts/1`) |
+| `/comments` | https://proyectom2albertojavierojedagutierrez-production.up.railway.app/comments | Lista de comments |
+| `/docs` | https://proyectom2albertojavierojedagutierrez-production.up.railway.app/docs | Documentación interactiva (Swagger UI) |
+
+Los endpoints `POST`, `PUT` y `DELETE` requieren un cliente HTTP (Postman, curl, etc.) ya que no se pueden probar directamente desde el navegador — consulta `/docs` para probarlos de forma interactiva, o el archivo [`openapi.yaml`](./openapi.yaml) para el detalle completo de cada uno.
+
 **Para replicar el deploy desde cero:**
 1. Conectar el repositorio de GitHub a un nuevo proyecto de Railway.
 2. Agregar un servicio de PostgreSQL dentro del mismo proyecto ("+ New" → "Database" → "Add PostgreSQL").
@@ -144,6 +156,5 @@ Utilicé Claude (Anthropic) como asistente durante todo el desarrollo, siguiendo
 - **Testing:** originalmente se propuso Jest; al recordar que en clase vimos Vitest, le pedí migrar la suite de tests a Vitest + Supertest, incluyendo el ajuste de sintaxis a ES Modules que requiere Vitest y la separación de `app.js` (para testing) de `server.js` (arranque del proceso).
 - **Documentación OpenAPI:** le pedí generar la especificación completa a partir de los endpoints ya implementados, y validarla contra el estándar oficial.
 - **Deployment:** usé a la IA como guía paso a paso para el deploy en Railway (conexión de servicios, variables de entorno, generación de dominio), resolviendo en el camino un par de diferencias de interfaz entre lo que la IA esperaba y la versión actual de Railway (la pestaña "Query" ahora es parte de "Data").
-- **Depuración:** cuando tuve un error al hacer `git push` (rechazo por historiales no relacionados), le pedí ayuda para diagnosticar la causa antes de aplicar una solución.
 
 La IA no tomó decisiones de diseño por su cuenta sin mi confirmación en cada paso; el desarrollo fue iterativo, revisando y probando cada bloque de código antes de avanzar al siguiente.
